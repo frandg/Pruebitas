@@ -6,14 +6,50 @@ using System.Threading;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
-for (var a = 1; a <= 50; a++) {
-    var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-    var b = Convert.ToInt64((DateTime.UtcNow - epoch).TotalMilliseconds);
-    
-    
-    Console.WriteLine(b);
-    Console.WriteLine(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+Console.WriteLine(DigitoVerificador("123ab7"));
+Console.WriteLine(DigitoVerificador("1234567"));
+Console.WriteLine(DigitoVerificador("123abD7"));
+Console.WriteLine(DigitoVerificador("12ab7"));
+Console.WriteLine(DigitoVerificador("123ab"));
+Console.WriteLine(DigitoVerificador("1233ab7"));
+Console.WriteLine(DigitoVerificador("123afb7"));
+Console.WriteLine(DigitoVerificador("123ab74"));
+
+
+
+static int DigitoVerificador(string input)
+{
+    string pattern = @"^[0-9]{3}[a-zA-Z]{2}[0-9]{1}$";
+    Regex regex = new Regex(pattern);
+    MatchCollection matches = regex.Matches(input);
+
+    if (matches.Count > 0)
+    {
+        return int.Parse(input.Substring(2, 1));
+    }
+    else
+    {
+        char lastNumericChar = '\0';
+        for (int i = input.Length - 1; i >= 0; i--)
+        {
+            if (char.IsDigit(input[i]))
+            {
+                lastNumericChar = input[i];
+                break;
+            }
+        }
+        return int.Parse(lastNumericChar.ToString());
+    }
 }
+//for (var a = 1; a <= 50; a++) {
+//    var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+//    var b = Convert.ToInt64((DateTime.UtcNow - epoch).TotalMilliseconds);
+
+
+//    Console.WriteLine(b);
+//    Console.WriteLine(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+//}
 
 
 
